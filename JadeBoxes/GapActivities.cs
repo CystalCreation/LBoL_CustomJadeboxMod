@@ -58,7 +58,6 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                //TODO colors for numbers?
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "Crafting at Campfires" },
                 { "Description",  "At the start of the run, gain {Value1}"+
@@ -81,7 +80,7 @@ namespace CustomJadebox.JadeBoxes
 
                 private IEnumerator GainExhibits(GameRunController gameRun)
                 {
-                    //start with all ggap potion exhibits
+                    //start with all gap option exhibits
                     var exhibits = new List<Type> { typeof(Baota), typeof(Saiqianxiang), typeof(ShanliangDengpao),
                         typeof(ShoushiYubi), typeof(Xunlongchi) };
 
@@ -95,7 +94,7 @@ namespace CustomJadebox.JadeBoxes
                         exhibits.RemoveAt(remove);
                     }
 
-                    //give the remainin exhibits to the player
+                    //give the remaining exhibits to the player
                     foreach (var ex in exhibits)
                     {
                         yield return gameRun.GainExhibitRunner(Library.CreateExhibit(ex),true);

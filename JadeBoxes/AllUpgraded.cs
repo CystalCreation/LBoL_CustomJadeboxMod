@@ -122,7 +122,6 @@ namespace CustomJadebox.JadeBoxes
                             //check if card is not upgraded
                             if (card.CanUpgrade && card.CanUpgradeAndPositive && !card.IsUpgraded)
                             {
-                                //base.GameRun.UpgradeDeckCard(card, false);
                                 card.Upgrade();
                             }
                         }

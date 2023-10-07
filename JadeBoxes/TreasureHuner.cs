@@ -93,7 +93,7 @@ namespace CustomJadebox.JadeBoxes
                         };
                     
 
-                    //remove all treasures the plaer already has
+                    //remove all treasures the player already has
                     foreach (var item in run.Player.Exhibits)
                     {
                         Debug.Log("player has exibit: " + item.Name);

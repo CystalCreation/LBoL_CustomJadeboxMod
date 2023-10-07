@@ -55,7 +55,6 @@ namespace CustomJadebox
 
             public override LocalizationOption LoadLocalization()
             {
-                //TODO colors for numbers?
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "World of Hurt" },
                 { "Description", "At the start of the run, gain the |Sewing Machine|. " + "At the start of combat, gain {Value1}" +
