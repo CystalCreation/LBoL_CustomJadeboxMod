@@ -50,6 +50,7 @@ namespace CustomJadebox.JadeBoxes
             {
                 var config = DefaultConfig();
                 config.Value1 = exibitsToGain;
+                config.Value2 = newUpgradePrice;
                 return config;
             }
 
@@ -60,8 +61,8 @@ namespace CustomJadebox.JadeBoxes
                 //TODO colors for numbers?
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "Crafting at Campfires" },
-                { "Description",  "At the start of the run, gain " +exibitsToGain+
-                " random exhibits that unlock options at a gap. Upgrading cards at a shop or non-basic cards at a gap costs " + newUpgradePrice + "."}
+                { "Description",  "At the start of the run, gain {Value1}"+
+                " random exhibits that unlock options at a gap. Upgrading cards at a shop or non-basic cards at a gap costs {Value2}<sprite=\"Point\"\\ name=\"Gold\">."}
             });
             }
 
@@ -80,11 +81,13 @@ namespace CustomJadebox.JadeBoxes
 
                 private IEnumerator GainExhibits(GameRunController gameRun)
                 {
+                    //start with all ggap potion exhibits
                     var exhibits = new List<Type> { typeof(Baota), typeof(Saiqianxiang), typeof(ShanliangDengpao),
                         typeof(ShoushiYubi), typeof(Xunlongchi) };
 
                     var rng = gameRun.AdventureRng;
 
+                    //randomly remove until the desired number remains 
                     int removeCount = exhibits.Count - exibitsToGain;
                     for (int i = 0; i < removeCount; i++)
                     {
@@ -92,6 +95,7 @@ namespace CustomJadebox.JadeBoxes
                         exhibits.RemoveAt(remove);
                     }
 
+                    //give the remainin exhibits to the player
                     foreach (var ex in exhibits)
                     {
                         yield return gameRun.GainExhibitRunner(Library.CreateExhibit(ex),true);
@@ -117,6 +121,7 @@ namespace CustomJadebox.JadeBoxes
 
                 }
 
+                //overwrite shop price for card upgrades
                 [HarmonyPatch]
                 class UpgradeDeckCardPrice_Patch
                 {
@@ -127,6 +132,7 @@ namespace CustomJadebox.JadeBoxes
 
                     static void Postfix(ref int __result)
                     {
+                        //check if jadebox is actually enabled
                         if (IsGapActivityJadebox())
                         {
                             __result = newUpgradePrice;
@@ -135,14 +141,16 @@ namespace CustomJadebox.JadeBoxes
                     }
                 }
 
-
+                //overwrite gap price for card upgrades
                 [HarmonyPatch(typeof(GapStation), nameof(GapStation.OnEnter))]
                 class GapStation_OnEnter_Patch
                 {
                     static void Postfix(GapStation __instance)
                     {
+                        //check if jadebox is actually enabled
                         if (IsGapActivityJadebox())
                         {
+                            //Don't change price if upgrade option doesn't exist
                             UpgradeCard upgradeOption = ((UpgradeCard)__instance.GapOptions.Find((GapOption g) => g is UpgradeCard));
                             if(upgradeOption != null)
                             {

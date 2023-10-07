@@ -5,6 +5,7 @@ using LBoL.Core;
 using LBoL.Core.Battle;
 using LBoL.Core.Battle.BattleActions;
 using LBoL.Core.Cards;
+using LBoL.Core.JadeBoxes;
 using LBoL.Core.Randoms;
 using LBoL.Core.Stations;
 using LBoL.Core.StatusEffects;
@@ -32,7 +33,6 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using static CustomJadebox.BepinexPlugin;
-using static CustomJadebox.JadeBoxes.TreasureHuner.TreasureHunterDef;
 
 namespace CustomJadebox
 {
@@ -48,10 +48,9 @@ namespace CustomJadebox
 
             public override LocalizationOption LoadLocalization()
             {
-                //TODO colors for numbers?
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "Forget Your Name" },
-                { "Description", "At the start of the run, replace all mana in the mana base with Philosophers mana. " +
+                { "Description", "At the start of the run, replace all mana in the mana base with {Mana}. " +
                 "Cards of all colors are added to the card pool. Card rewards have one more option. Only Neutral cards can appear."}
             });
             }
@@ -59,6 +58,7 @@ namespace CustomJadebox
             public override JadeBoxConfig MakeConfig()
             {
                 var config = DefaultConfig();
+                config.Mana = ManaGroup.Single(ManaColor.Philosophy);
                 return config;
             }
 
@@ -66,13 +66,35 @@ namespace CustomJadebox
             [EntityLogic(typeof(ForgetYourNameDef))]
             public sealed class ForgetYourName : JadeBox
             {
-                
+                private static bool neutralOnlyActive = false;
+                private static bool synestasiaActive = false;
+                private static bool fullPowerActive = false;
+
 
                 protected override void OnGain(GameRunController gameRun)
                 {
-                    gameRun.BaseMana = ManaGroup.Empty;
+                    SetBaseMana(gameRun);
+                }
 
-                    for (int i = 0; i < 5; i++)
+                private static void SetBaseMana(GameRunController gameRun)
+                {
+                    //remove all base mana and then add 5 rainbow mana
+                    gameRun.BaseMana = ManaGroup.Empty;
+                    int rainbowManaCount = 5;
+
+                    CheckJadeboxes(gameRun);
+                    if (fullPowerActive)
+                    {
+                        //if full power is enabled, leave one mana of the original color that the GameRunController can replace with rainbow mana
+                        rainbowManaCount = 4;
+                        Exhibit primaryExhibit = Library.CreateExhibit((gameRun.PlayerType != PlayerType.TypeA) ? gameRun.Player.Config.ExhibitB : gameRun.Player.Config.ExhibitA);
+                        Debug.Log("primary exhibit: " + primaryExhibit.Name);
+                        gameRun.GainBaseMana(primaryExhibit.BaseMana, false);
+
+                    }
+
+
+                    for (int i = 0; i < rainbowManaCount; i++)
                     {
                         gameRun.GainBaseMana(ManaGroup.Single(ManaColor.Philosophy));
                     }
@@ -83,32 +105,43 @@ namespace CustomJadebox
                 {
                     base.GameRun.RewardAndShopCardColorLimitFlag++;
                     base.GameRun.AdditionalRewardCardCount++;
-
                 }
 
                 protected override void OnAdded()
                 {
+                    //flags need to be set in OnAdded or else they will be gone after a reload
                     Init();
                 }
 
-                private static bool IsNetralOnlyJadebox()
+                private static void CheckJadeboxes()
                 {
                     var run = GameMaster.Instance.CurrentGameRun;
-                    IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+                    CheckJadeboxes(run);
+                }
 
+
+                private static void CheckJadeboxes(GameRunController run)
+                {
+                    IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
 
                     if (jadeBox != null && jadeBox.Count > 0)
                     {
-                        if (run.JadeBox.Any((JadeBox jb) => jb is ForgetYourName))
-                        {
-                            return true;
-                        }
+                        neutralOnlyActive = run.JadeBox.Any((JadeBox jb) => jb is ForgetYourName);
+                        synestasiaActive = run.JadeBox.Any((JadeBox jb) => jb is AllCharacterCards);
+                        fullPowerActive = run.JadeBox.Any((JadeBox jb) => jb is TwoColorStart);
                     }
-                    return false;
+                    else
+                    {
+                        neutralOnlyActive = false;
+                        synestasiaActive = false;
+                        fullPowerActive = false;
+                    }
                 }
 
+
+                //overwrite the RollCards method by intercepting its prameters to always use OwnerWeightTable.OnlyNeutral in the CardWeightTable
                 [HarmonyPatch]
-                class GameRunController_Patch
+                class GameRunController_RollCards_Patch
                 {
                     static IEnumerable<MethodBase> TargetMethods()
                     {
@@ -117,26 +150,31 @@ namespace CustomJadebox
 
                     static void Prefix(ref CardWeightTable weightTable)
                     {
-                        if (IsNetralOnlyJadebox())
+                        CheckJadeboxes();
+                        //Allow the use of non-neutral cards only if Synestasia is enabled
+                        if (neutralOnlyActive && !synestasiaActive)
                         {
                             weightTable = new CardWeightTable(weightTable.RarityTable, OwnerWeightTable.OnlyNeutral, weightTable.CardTypeTable);
                         }
                     }
                 }
 
-
+                //overwrite ExchangeExhibit method to remove reinbow mana because there is no more mana of the original color to remove
                 [HarmonyPatch(typeof(Debut), nameof(Debut.ExchangeExhibit))]
                 class BanExhibitSwap_Patch
                 {
                     static void Prefix()
                     {
-                        if (IsNetralOnlyJadebox())
+                        CheckJadeboxes();
+                        if (neutralOnlyActive)
                         {
                             var run = GameMaster.Instance.CurrentGameRun;
                             run.LoseBaseMana(ManaGroup.Single(ManaColor.Philosophy));
                         }
                     }
                 }
+
+                
 
 
             }

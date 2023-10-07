@@ -58,7 +58,7 @@ namespace CustomJadebox
                 //TODO colors for numbers?
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "World of Hurt" },
-                { "Description", "At the start of the run, gain the Sewing Machine. " + "At the start of combat, gain " +spiritGain+
+                { "Description", "At the start of the run, gain the |Sewing Machine|. " + "At the start of combat, gain {Value1}" +
                 " Spirit. This Spirit gain decreases after every boss fight. At the start of the Player's turn, gain Vulnerable and apply Vulnerable to each enemy."}
             });
             }
@@ -82,15 +82,16 @@ namespace CustomJadebox
                     if (Battle.Player.TurnCounter == 1)
                     {
                         NotifyActivating();
-                        int duration = spiritGain - base.GameRun._stageIndex;
-                        if (duration >= 1)
+                        //give player spirit relitive to the number of bosses fough
+                        int level = spiritGain - base.GameRun._stageIndex;
+                        if (level >= 1)
                         {
-                            yield return new ApplyStatusEffectAction<Spirit>(player, duration);
+                            yield return new ApplyStatusEffectAction<Spirit>(player, level);
 
                         }
-                        //yield return new ApplyStatusEffectAction<Spirit>(player, spiritGain);
                     }
 
+                    //apply vurnerable to everyone
                     yield return new ApplyStatusEffectAction<Vulnerable>(player, null, 1);
                     foreach (var enemy in base.Battle.AllAliveEnemies)
                     {
@@ -108,6 +109,7 @@ namespace CustomJadebox
 
                 private IEnumerator GainExhibits(GameRunController gameRun)
                 {
+                    //give player the Sewing Machine
                     var exhibit = new HashSet<Type> { typeof(Fengrenji) };
                     foreach (var et in exhibit)
                     {

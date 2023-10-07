@@ -43,7 +43,7 @@ namespace CustomJadebox.JadeBoxes
 
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "Space Time Hole" },
-                { "Description", "At the start of the run, gain the Lunar Fan. The Player and the enemies take two turns in a row."}
+                { "Description", "At the start of the run, gain the |Lunar Fan|. The Player and the enemies take two turns in a row."}
             });
             }
 
@@ -67,8 +67,10 @@ namespace CustomJadebox.JadeBoxes
 
                     PlayerUnit player = Battle.Player;
 
+                    //check if player is already in an extra turn
                     if (!player.IsExtraTurn)
                     {
+                        //Apply status that gives extra turns
                         yield return new ApplyStatusEffectAction<LBoL.Core.StatusEffects.ExtraTurn>(player, 1);
                         foreach (var enemy in Battle.AllAliveEnemies)
                         {
@@ -84,6 +86,7 @@ namespace CustomJadebox.JadeBoxes
 
                 private IEnumerator GainExhibits(GameRunController gameRun)
                 {
+                    //Give player the Lunar Fan
                     var exhibit = new HashSet<Type> { typeof(Yueshan) };
                     foreach (var et in exhibit)
                     {

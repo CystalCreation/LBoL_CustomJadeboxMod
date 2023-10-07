@@ -48,14 +48,16 @@ namespace CustomJadebox.JadeBoxes
                 return new DirectLocalization(new Dictionary<string, object>() {
                 { "Name", "Adored by All" },
                 { "Description", "All cards that get added to your library are upgraded. " +
-                "Non-shining exhibits that upgrade cards are removed from the pool. At the start of each combat, all enemies gain "
-                +firepowerGain+" Firepower and " +regretsGain+" Lingering Regrets."}
+                "Non-shining exhibits that upgrade cards are removed from the pool. At the start of each combat, all enemies gain {Value1}"
+                +" Firepower and {Value2} Lingering Regrets."}
             });
             }
 
             public override JadeBoxConfig MakeConfig()
             {
                 var config = DefaultConfig();
+                config.Value1 = firepowerGain;
+                config.Value2 = regretsGain;
                 return config;
             }
 
@@ -75,6 +77,7 @@ namespace CustomJadebox.JadeBoxes
                     {
                         NotifyActivating();
                         
+                        //apply buffs to all enemies on the first turn
                         foreach (var enemy in Battle.AllAliveEnemies)
                         {
                             yield return new ApplyStatusEffectAction<LBoL.EntityLib.StatusEffects.Enemy.LoveGirlDamageReduce>(enemy, regretsGain, null, null, null, 0, false);
@@ -85,14 +88,13 @@ namespace CustomJadebox.JadeBoxes
 
                 protected override void OnGain(GameRunController gameRun)
                 {
-                    
                     UpgradeAllCards();
-                    //gameRun.AddDeckCards(Library.CreateCards<LoveLetter>(1, false));
                     GameMaster.Instance.StartCoroutine(RemoveFromPool(gameRun));
                 }
 
                 protected override void OnAdded()
                 {
+                    //card upgrade event needs to be added in OnAdded or else it will be gone after a reload
                     HandleGameRunEvent(GameRun.DeckCardsAdded, OnDeckCardAdded);
                 }
 
@@ -113,11 +115,11 @@ namespace CustomJadebox.JadeBoxes
                 {
                     try
                     {
+                        //always upgrae all card in the deck in case several card are added at once
                         Debug.Log("cards in deck: " + GameRun.BaseDeck.Count);
                         foreach (var card in GameRun.BaseDeck)
                         {
-
-                            
+                            //check if card is not upgraded
                             if (card.CanUpgrade && card.CanUpgradeAndPositive && !card.IsUpgraded)
                             {
                                 //base.GameRun.UpgradeDeckCard(card, false);
@@ -133,6 +135,7 @@ namespace CustomJadebox.JadeBoxes
 
                 private IEnumerator RemoveFromPool(GameRunController gameRun)
                 {
+                    //remove exhibits that become useless with universal access to upgraded cards
                     var exhibit = new HashSet<Type> { typeof(Chaidao), typeof(Fengrenji),
                         typeof(Jiaobu), typeof(Shoubiao), typeof(Shouyinji), typeof(Zixingche)};
 

@@ -39,7 +39,7 @@ namespace CustomJadebox.JadeBoxes
 
         public sealed class TreasureHunterDef : JadeBoxTemplate
         {
-            
+
 
             public override IdContainer GetId()
             {
@@ -65,8 +65,8 @@ namespace CustomJadebox.JadeBoxes
             [EntityLogic(typeof(TreasureHunterDef))]
             public sealed class GetGetTreasureHuner : JadeBox
             {
-               
 
+                //initialize the list with valid default values in case someting goes wrong
                 public static List<Exhibit> treasureRewardList = new List<Exhibit>()
                         {
                             Library.CreateExhibit<FoyushiBo>(),
@@ -76,17 +76,13 @@ namespace CustomJadebox.JadeBoxes
 
 
 
-                protected override void OnEnterBattle()
+
+
+                private static void SetRewardList(GameRunController run)
                 {
-                    
-                }
+                    var rng = run.AdventureRng;
 
-
-                private static void SetRewardList( GameRunController run)
-                {
-                   var rng = run.AdventureRng;
-
-
+                    //initialize list with all treasures
                     var rewardList = new List<Exhibit>()
                         {
                             Library.CreateExhibit<FoyushiBo>(),
@@ -95,26 +91,22 @@ namespace CustomJadebox.JadeBoxes
                             Library.CreateExhibit<PenglaiYuzhi>(),
                             Library.CreateExhibit<YanZianbei>()
                         };
+                    
 
-                    Debug.Log("starting SetRewardList: ");
-                    foreach (var item in rewardList)
-                    {
-                        Debug.Log(" initial rewardList has: " + item.Name);
-
-                    }
-
-
+                    //remove all treasures the plaer already has
                     foreach (var item in run.Player.Exhibits)
                     {
-                        Debug.Log(" player has exibit: " + item.Name);
-                        if (rewardList.Find( i => i.Name == item.Name) != null) {
+                        Debug.Log("player has exibit: " + item.Name);
+                        if (rewardList.Find(i => i.Name == item.Name) != null)
+                        {
                             Debug.Log("removing exibit from reward list: " + item.Name);
                             rewardList.Remove(rewardList.Find(i => i.Name == item.Name));
                         }
                     }
                     Debug.Log("after remove existing SetRewardList rewardList count: " + rewardList.Count);
 
-                    if(rewardList.Count > 3)
+                    //remove random treasures if the list has more than 3
+                    if (rewardList.Count > 3)
                     {
                         for (int i = 0; rewardList.Count > 3 || i > 3; i++)
                         {
@@ -122,13 +114,16 @@ namespace CustomJadebox.JadeBoxes
                             Debug.Log("randomly removing at index: " + remove);
                             rewardList.RemoveAt(remove);
                         }
-                    }else if(rewardList.Count < 3)
+                    }
+
+                    //add dublicate treasure if there are less than 3 treasures left to get
+                    else if (rewardList.Count < 3)
                     {
                         for (int i = 0; rewardList.Count < 3 || i > 3; i++)
                         {
                             if (rewardList.Count == 0)
                             {
-                                //Add placeholder exibit if no more valid exibits are availabe
+                                //Add placeholder if no more valid treasures are availabe
                                 rewardList.Add(Library.CreateExhibit<YanZianbei>());
                             }
                             var randomRxibit = rewardList[rng.NextInt(0, rewardList.Count - 1)];
@@ -138,32 +133,25 @@ namespace CustomJadebox.JadeBoxes
 
                     }
 
-
-                    Debug.Log("final SetRewardList rewardList count: " + rewardList.Count);
-                    foreach (var item in rewardList)
-                    {
-                        Debug.Log(" rewardList has: " + item.Name);
-
-                    }
                     treasureRewardList = rewardList;
                 }
 
 
 
-
+                //overwrite GenerateBossRewards method to only provide treasures
                 [HarmonyPatch(typeof(BossStation), nameof(BossStation.GenerateBossRewards))]
                 class BossStation_GenerateBossRewards_Patch
                 {
                     static void Postfix(BossStation __instance)
                     {
 
-
                         IReadOnlyList<JadeBox> jadeBox = __instance.GameRun._jadeBoxes;
-                        if (jadeBox != null && jadeBox.Count > 0 )
+                        if (jadeBox != null && jadeBox.Count > 0)
                         {
                             foreach (var jb in jadeBox)
                             {
-                                if(jb is GetGetTreasureHuner){
+                                if (jb is GetGetTreasureHuner)
+                                {
                                     SetRewardList(__instance.GameRun);
                                     Debug.Log("BossStation_GenerateBossRewards_Patch rewardList count: " + treasureRewardList.Count);
 
@@ -173,7 +161,7 @@ namespace CustomJadebox.JadeBoxes
                             }
                         }
 
-                        
+
                     }
                 }
 
