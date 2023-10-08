@@ -116,6 +116,10 @@ namespace CustomJadebox.JadeBoxes
 
                 private static bool IsInCombatStation(GameRunController gameRun)
                 {
+                    if(gameRun == null || gameRun.CurrentStation == null)
+                    {
+                        return false;
+                    }
                     var currentStationType = gameRun.CurrentStation.Type;
                     return (currentStationType == StationType.Enemy) || (currentStationType == StationType.EliteEnemy);
                 }
@@ -147,9 +151,13 @@ namespace CustomJadebox.JadeBoxes
                     return TypeFactory<Card>.CreateInstance(list.Sample(rng));
                 }
 
-                public static bool IsRareMisfortuneJadebox()
+                public static bool IsRareMisfortuneJadebox(GameRunController run)
                 {
-                    var run = GameMaster.Instance.CurrentGameRun;
+                    if (run == null)
+                    {
+                        return false;
+                    }
+
                     IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
 
                     if (jadeBox != null && jadeBox.Count > 0)
@@ -174,7 +182,7 @@ namespace CustomJadebox.JadeBoxes
 
                     static void Prefix(ref CardWeightTable weightTable, GameRunController __instance)
                     {
-                        if (IsRareMisfortuneJadebox() && IsInCombatStation(__instance) && !IsInBattle(__instance))
+                        if (IsRareMisfortuneJadebox(__instance) && IsInCombatStation(__instance) && !IsInBattle(__instance))
                         {
                             int number = __instance.CardRng.NextInt(1, newRareChance);
                             Debug.Log("Random number for rare card: "+ number);

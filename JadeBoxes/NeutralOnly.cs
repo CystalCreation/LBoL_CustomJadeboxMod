@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using CustomJadebox.JadeBoxes;
+using CustomJadebox.Util;
+using HarmonyLib;
 using LBoL.Base;
 using LBoL.ConfigData;
 using LBoL.Core;
@@ -99,43 +101,52 @@ namespace CustomJadebox
                         gameRun.GainBaseMana(ManaGroup.Single(ManaColor.Philosophy));
                     }
 
+                    Init(gameRun);
+                    ResetStart50.ResetStart50Deck(gameRun,!synestasiaActive);
                 }
 
-                private void Init()
+                private static void Init(GameRunController gameRun)
                 {
-                    base.GameRun.RewardAndShopCardColorLimitFlag++;
-                    base.GameRun.AdditionalRewardCardCount++;
+                    gameRun.RewardAndShopCardColorLimitFlag++;
+                    gameRun.AdditionalRewardCardCount++;
                 }
+
 
                 protected override void OnAdded()
                 {
                     //flags need to be set in OnAdded or else they will be gone after a reload
-                    Init();
-                }
-
-                private static void CheckJadeboxes()
-                {
-                    var run = GameMaster.Instance.CurrentGameRun;
-                    CheckJadeboxes(run);
+                    Init(base.GameRun);
                 }
 
 
                 private static void CheckJadeboxes(GameRunController run)
                 {
-                    IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+                    neutralOnlyActive = false;
+                    synestasiaActive = false;
+                    fullPowerActive = false;
+                    try
+                    {
+                        if(run == null)
+                        {
+                            Debug.Log("game run controller is null");
+                            return;
+                        }
+                        IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
 
-                    if (jadeBox != null && jadeBox.Count > 0)
-                    {
-                        neutralOnlyActive = run.JadeBox.Any((JadeBox jb) => jb is ForgetYourName);
-                        synestasiaActive = run.JadeBox.Any((JadeBox jb) => jb is AllCharacterCards);
-                        fullPowerActive = run.JadeBox.Any((JadeBox jb) => jb is TwoColorStart);
+                        if (jadeBox != null && jadeBox.Count > 0)
+                        {
+                            neutralOnlyActive = run.JadeBox.Any((JadeBox jb) => jb is ForgetYourName);
+                            synestasiaActive = run.JadeBox.Any((JadeBox jb) => jb is AllCharacterCards);
+                            fullPowerActive = run.JadeBox.Any((JadeBox jb) => jb is TwoColorStart);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        neutralOnlyActive = false;
-                        synestasiaActive = false;
-                        fullPowerActive = false;
+                        Debug.LogError("Error when checking jadeboxes in Forget your name: " + e.Message + e.StackTrace);
+                         
                     }
+                    
+                    
                 }
 
 
@@ -148,9 +159,9 @@ namespace CustomJadebox
                         return AccessTools.GetDeclaredMethods(typeof(GameRunController)).Where(m => m.Name == "RollCards").ToList();
                     }
 
-                    static void Prefix(ref CardWeightTable weightTable)
+                    static void Prefix(ref CardWeightTable weightTable, GameRunController __instance)
                     {
-                        CheckJadeboxes();
+                        CheckJadeboxes(__instance);
                         //Allow the use of non-neutral cards only if Synestasia is enabled
                         if (neutralOnlyActive && !synestasiaActive)
                         {
@@ -163,9 +174,9 @@ namespace CustomJadebox
                 [HarmonyPatch(typeof(Debut), nameof(Debut.ExchangeExhibit))]
                 class BanExhibitSwap_Patch
                 {
-                    static void Prefix()
+                    static void Prefix(Debut __instance)
                     {
-                        CheckJadeboxes();
+                        CheckJadeboxes(__instance.GameRun);
                         if (neutralOnlyActive)
                         {
                             var run = GameMaster.Instance.CurrentGameRun;

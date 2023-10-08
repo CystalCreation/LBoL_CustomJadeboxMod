@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CustomJadebox.Util;
+using HarmonyLib;
 using LBoL.Base;
 using LBoL.ConfigData;
 using LBoL.Core;
@@ -74,8 +75,8 @@ namespace CustomJadebox.JadeBoxes
             [EntityLogic(typeof(ChromaShiftDef))]
             public sealed class GetChromaShift : JadeBox
             {
-                private Exhibit selectedExhibit;
-                private Exhibit secondaryExhibit;
+                private static Exhibit selectedExhibit;
+                private static Exhibit secondaryExhibit;
 
                 protected override void OnGain(GameRunController gameRun)
                 {
@@ -85,7 +86,7 @@ namespace CustomJadebox.JadeBoxes
 
                 }
 
-                private IEnumerator GainExhibit(GameRunController gameRun)
+                private static IEnumerator GainExhibit(GameRunController gameRun)
                 {
                     //list of all currently available starting exhibits
                     var exhibits = new List<Type> { typeof(CirnoG), typeof(CirnoU), typeof(MarisaB),
@@ -127,7 +128,7 @@ namespace CustomJadebox.JadeBoxes
 
                 }
 
-                private IEnumerator SetMana(GameRunController gameRun)
+                private static IEnumerator SetMana(GameRunController gameRun)
                 {
                     yield return null;
 
@@ -148,14 +149,21 @@ namespace CustomJadebox.JadeBoxes
                         gameRun.GainBaseMana(selectedExhibit.BaseMana, false);
                     }
 
-                    ReplaceCards();
+                    yield return null;
+                    ReplaceCards(gameRun);
                 }
 
-                private void ReplaceCards()
+                private static void ReplaceCards(GameRunController gameRun)
                 {
+                    //If Cromatic Dominator is active, reroll the deck with the new mana and skip replacing basics
+                    if (ResetStart50.ResetStart50Deck(gameRun))
+                    {
+                        return;
+                    }
+
                     var toRemove = new List<Card>();
                     ManaColor colorToRemove = secondaryExhibit.Config.BaseManaColor.Value;
-                    foreach (var card in GameRun.BaseDeck)
+                    foreach (var card in gameRun.BaseDeck)
                     {
                         //check how many basic cards need to be removed
                         if (card.Config.Colors.Contains(colorToRemove) && card.IsBasic)
@@ -167,63 +175,67 @@ namespace CustomJadebox.JadeBoxes
                     //add different color basic cards equal to the number of removed ones
                     for (int i = 0; i < toRemove.Count; i++)
                     {
-                        GetBasicForExhibit();
+                        GetBasicForExhibit(gameRun);
                     }
 
                     foreach (var card in toRemove)
                     {
-                        base.GameRun.RemoveDeckCard(card);
+                        gameRun.RemoveDeckCard(card);
                     }
                 }
 
-                private void GetBasicForExhibit()
+                private static void GetBasicForExhibit(GameRunController gameRun)
                 {
+                      
+
                     //select basic card to replace based on the gained exhibit
                     Debug.Log("about to add card for selected exhibit: " + selectedExhibit.Name);
                     if (selectedExhibit is CirnoG)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<CirnoBlockG>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<CirnoBlockG>(1, false));
                     }
                     else if (selectedExhibit is CirnoU)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<CirnoBlockU>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<CirnoBlockU>(1, false));
                     }
 
                     else if (selectedExhibit is MarisaB)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<MarisaBlockB>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<MarisaBlockB>(1, false));
                     }
                     else if (selectedExhibit is MarisaR)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<MarisaBlockR>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<MarisaBlockR>(1, false));
                     }
 
                     else if (selectedExhibit is ReimuR)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<ReimuBlockR>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<ReimuBlockR>(1, false));
                     }
                     else if (selectedExhibit is ReimuW)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<ReimuBlockW>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<ReimuBlockW>(1, false));
                     }
 
                     else if (selectedExhibit is SakuyaU)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<SakuyaBlockU>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<SakuyaBlockU>(1, false));
                     }
                     else if (selectedExhibit is SakuyaW)
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<SakuyaBlockW>(1, false));
+                        gameRun.AddDeckCards(Library.CreateCards<SakuyaBlockW>(1, false));
                     }
 
                     else
                     {
-                        base.GameRun.AddDeckCards(Library.CreateCards<ReimuBlockR>(1, true));
+                        gameRun.AddDeckCards(Library.CreateCards<ReimuBlockR>(1, true));
                         Debug.LogError("cant find card for selected exhibit: " + selectedExhibit.Name);
                     }
 
 
                 }
+
+                
 
             }
 
