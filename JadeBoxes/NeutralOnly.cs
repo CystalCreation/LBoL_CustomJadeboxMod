@@ -101,7 +101,7 @@ namespace CustomJadebox
                         gameRun.GainBaseMana(ManaGroup.Single(ManaColor.Philosophy));
                     }
 
-                    Init(gameRun);
+                    gameRun.RewardAndShopCardColorLimitFlag++;
                     ResetStart50.ResetStart50Deck(gameRun,!synestasiaActive);
                 }
 
