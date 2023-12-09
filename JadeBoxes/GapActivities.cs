@@ -29,7 +29,6 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using static CustomJadebox.BepinexPlugin;
-using static CustomJadebox.NeutralOnly.ForgetYourNameDef;
 
 namespace CustomJadebox.JadeBoxes
 {
@@ -107,11 +106,11 @@ namespace CustomJadebox.JadeBoxes
                 private static bool IsGapActivityJadebox()
                 {
                     var run = GameMaster.Instance.CurrentGameRun;
-                    IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+                    IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
 
                     if (jadeBox != null && jadeBox.Count > 0)
                     {
-                        if (run.JadeBox.Any((JadeBox jb) => jb is GetGapActivities))
+                        if (run.JadeBoxes.Any((JadeBox jb) => jb is GetGapActivities))
                         {
                             return true;
                         }

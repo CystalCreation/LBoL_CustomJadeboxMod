@@ -10,8 +10,6 @@ using LBoL.Core.Units;
 using LBoL.EntityLib.Cards.Neutral.Red;
 using LBoL.EntityLib.Exhibits.Common;
 using LBoL.EntityLib.Exhibits.Shining;
-using LBoL.EntityLib.JadeBoxes;
-using LBoL.EntityLib.StatusEffects.Others;
 using LBoL.Presentation;
 using LBoL.Presentation.UI.Panels;
 using LBoLEntitySideloader;

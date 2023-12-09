@@ -12,8 +12,6 @@ using LBoL.Core.StatusEffects;
 using LBoL.Core.Units;
 using LBoL.EntityLib.Cards.Character.Marisa;
 using LBoL.EntityLib.Cards.Neutral.Red;
-using LBoL.EntityLib.Cards.Other.Enemy;
-using LBoL.EntityLib.Cards.Other.Misfortune;
 using LBoL.EntityLib.Exhibits.Common;
 using LBoL.EntityLib.Exhibits.Shining;
 using LBoL.EntityLib.JadeBoxes;

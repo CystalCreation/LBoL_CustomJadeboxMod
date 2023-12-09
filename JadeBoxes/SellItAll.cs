@@ -90,11 +90,11 @@ namespace CustomJadebox.JadeBoxes
                         return false;
                     }
 
-                    IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+                    IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
 
                     if (jadeBox != null && jadeBox.Count > 0)
                     {
-                        if (run.JadeBox.Any((JadeBox jb) => jb is SellItAllJadebox))
+                        if (run.JadeBoxes.Any((JadeBox jb) => jb is SellItAllJadebox))
                         {
                             return true;
                         }
@@ -169,16 +169,17 @@ namespace CustomJadebox.JadeBoxes
 
                     static IEnumerator SellAllExhibits()
                     {
-                        var run = GameMaster.Instance.CurrentGameRun;
-                        if (IsSellItAllJadebox(run) )
+                        if ((GameMaster.Instance != null) && IsSellItAllJadebox(GameMaster.Instance.CurrentGameRun) )
                         {
+                            var run = GameMaster.Instance.CurrentGameRun;
+
                             List<Exhibit> toRemove = new List<Exhibit>();
                             foreach (var ex in run.Player.Exhibits)
                             {
                                 //filter out shining and trade quest exhibits by checking if they are losable
                                 if (ex.LosableType == ExhibitLosableType.Losable ) 
                                 {
-                                    run.GainMoney(GetExhibitPrice(ex), true, new VisualSourceData
+                                    GainMoneyWithNullcheck(run, GetExhibitPrice(ex), true, new VisualSourceData
                                     {
                                         SourceType = VisualSourceType.Entity,
                                         Source = ex
@@ -195,6 +196,22 @@ namespace CustomJadebox.JadeBoxes
                         }
                         yield break;
                     }
+                }
+
+                //Need to use custom money gain function because the vanilla one lacks a null check for VisualTrigger
+                public static void GainMoneyWithNullcheck(GameRunController run, int money, bool triggerVisual = false, VisualSourceData sourceData = null)
+                {
+                    if (run == null)
+                    {
+                        return;
+                    }
+
+                    run.InternalGainMoney(money);
+                    run.VisualTrigger?.OnGainMoney(money, triggerVisual, sourceData);
+                    run.MoneyGained?.Execute(new GameEventArgs
+                    {
+                        CanCancel = false
+                    });
                 }
 
                 //Overwrite GetShopExhibit to return shining exhibits on the right rng roll
@@ -246,6 +263,8 @@ namespace CustomJadebox.JadeBoxes
                         
                     }
                 }
+
+               
 
             }
 

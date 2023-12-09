@@ -102,7 +102,7 @@ namespace CustomJadebox
                     }
 
                     gameRun.RewardAndShopCardColorLimitFlag++;
-                    ResetStart50.ResetStart50Deck(gameRun,!synestasiaActive);
+                    ResetStart50.ResetStart50Deck(gameRun);
                 }
 
                 private static void Init(GameRunController gameRun)
@@ -131,13 +131,13 @@ namespace CustomJadebox
                             Debug.Log("game run controller is null");
                             return;
                         }
-                        IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+                        IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
 
                         if (jadeBox != null && jadeBox.Count > 0)
                         {
-                            neutralOnlyActive = run.JadeBox.Any((JadeBox jb) => jb is ForgetYourName);
-                            synestasiaActive = run.JadeBox.Any((JadeBox jb) => jb is AllCharacterCards);
-                            fullPowerActive = run.JadeBox.Any((JadeBox jb) => jb is TwoColorStart);
+                            neutralOnlyActive = run.JadeBoxes.Any((JadeBox jb) => jb is ForgetYourName);
+                            synestasiaActive = run.JadeBoxes.Any((JadeBox jb) => jb is AllCharacterCards);
+                            fullPowerActive = run.JadeBoxes.Any((JadeBox jb) => jb is TwoColorStart);
                         }
                     }
                     catch (Exception e)

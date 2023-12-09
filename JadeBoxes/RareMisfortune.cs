@@ -10,10 +10,6 @@ using LBoL.Core.Randoms;
 using LBoL.Core.Stations;
 using LBoL.Core.StatusEffects;
 using LBoL.Core.Units;
-using LBoL.EntityLib.Cards.Character.Marisa;
-using LBoL.EntityLib.Cards.Neutral.Red;
-using LBoL.EntityLib.Cards.Other.Enemy;
-using LBoL.EntityLib.Cards.Other.Misfortune;
 using LBoL.EntityLib.Exhibits.Common;
 using LBoL.EntityLib.Exhibits.Shining;
 using LBoL.EntityLib.JadeBoxes;
@@ -158,11 +154,11 @@ namespace CustomJadebox.JadeBoxes
                         return false;
                     }
 
-                    IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+                    IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
 
                     if (jadeBox != null && jadeBox.Count > 0)
                     {
-                        if (run.JadeBox.Any((JadeBox jb) => jb is RareMisfortuneJadebox))
+                        if (run.JadeBoxes.Any((JadeBox jb) => jb is RareMisfortuneJadebox))
                         {
                             return true;
                         }

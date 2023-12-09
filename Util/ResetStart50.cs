@@ -5,21 +5,12 @@ using LBoL.Core;
 using LBoL.Core.Battle;
 using LBoL.Core.Battle.BattleActions;
 using LBoL.Core.Cards;
+using LBoL.Core.JadeBoxes;
 using LBoL.Core.Randoms;
 using LBoL.Core.Stations;
 using LBoL.Core.StatusEffects;
 using LBoL.Core.Units;
 using LBoL.EntityLib.Adventures;
-using LBoL.EntityLib.Cards.Character.Cirno;
-using LBoL.EntityLib.Cards.Character.Marisa;
-using LBoL.EntityLib.Cards.Character.Reimu;
-using LBoL.EntityLib.Cards.Character.Sakuya;
-using LBoL.EntityLib.Cards.Neutral.NoColor;
-using LBoL.EntityLib.Cards.Neutral.Red;
-using LBoL.EntityLib.Cards.Other.Enemy;
-using LBoL.EntityLib.Cards.Other.Misfortune;
-using LBoL.EntityLib.Exhibits;
-using LBoL.EntityLib.Exhibits.Common;
 using LBoL.EntityLib.Exhibits.Shining;
 using LBoL.EntityLib.JadeBoxes;
 using LBoL.EntityLib.StatusEffects.Others;
@@ -41,20 +32,36 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using static CustomJadebox.BepinexPlugin;
+using static CustomJadebox.JadeBoxes.OnlyRare.OnlyRareDef;
+using static CustomJadebox.NeutralOnly.ForgetYourNameDef;
 
 namespace CustomJadebox.Util
 {
     public class ResetStart50
     {
         //50 card deck gets generated before the mana gets switched with Chroma Shift or RollCards get overwritten with Forget your Name so the deck has to be cleared and rerolled
-        public static bool ResetStart50Deck(GameRunController run, bool neutralOnlyActive = false)
+        public static bool ResetStart50Deck(GameRunController run)
         {
             if (run == null)
             {
                 return false;
             }
 
-            IReadOnlyList<JadeBox> jadeBox = run.JadeBox;
+            IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
+
+            bool neutralOnlyActive = false;
+            bool synestasiaActive = false;
+            bool rareOnlyActive = false;
+
+            if (jadeBox != null && jadeBox.Count > 0)
+            {
+                neutralOnlyActive = run.JadeBoxes.Any((JadeBox jb) => jb is ForgetYourName);
+                synestasiaActive = run.JadeBoxes.Any((JadeBox jb) => jb is AllCharacterCards);
+                rareOnlyActive = run.JadeBoxes.Any((JadeBox jb) => jb is OnlyRareJadebox);
+
+            }
+
+            
 
             if (jadeBox != null && jadeBox.Count > 0)
             {
@@ -67,11 +74,16 @@ namespace CustomJadebox.Util
                         for (int i = 0; i < item.Value1; i++)
                         {
                             OwnerWeightTable ownerTable = OwnerWeightTable.Valid;
-                            if (neutralOnlyActive)
+                            RarityWeightTable rarityTable = RarityWeightTable.EnemyCard;
+                            if (neutralOnlyActive && !synestasiaActive)
                             {
                                 ownerTable = OwnerWeightTable.OnlyNeutral;
                             }
-                            Card[] cards = run.RollCards(run.CardRng, new CardWeightTable(RarityWeightTable.EnemyCard, ownerTable, CardTypeWeightTable.CanBeLoot), 1, false, null);
+                            if (rareOnlyActive)
+                            {
+                                rarityTable = RarityWeightTable.OnlyRare;
+                            }
+                            Card[] cards = run.RollCards(run.CardRng, new CardWeightTable(rarityTable, ownerTable, CardTypeWeightTable.CanBeLoot), 1, false, null);
                             run.AddDeckCards(cards, false, null);
                         }
 
