@@ -83,7 +83,7 @@ namespace CustomJadebox.Util
                             {
                                 rarityTable = RarityWeightTable.OnlyRare;
                             }
-                            Card[] cards = run.RollCards(run.CardRng, new CardWeightTable(rarityTable, ownerTable, CardTypeWeightTable.CanBeLoot), 1, false, null);
+                            Card[] cards = run.RollCards(run.CardRng, new CardWeightTable(rarityTable, ownerTable, CardTypeWeightTable.CanBeLoot), 1, run.BaseMana, !neutralOnlyActive);
                             run.AddDeckCards(cards, false, null);
                         }
 

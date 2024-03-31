@@ -219,9 +219,9 @@ namespace CustomJadebox.JadeBoxes
                     {
                         gameRun.AddDeckCards(Library.CreateCards<SakuyaBlockW>(1, false));
                     }
-
                     else
                     {
+                        //Use upgareded reimbu basics as fallback option
                         gameRun.AddDeckCards(Library.CreateCards<ReimuBlockR>(1, true));
                         Debug.LogError("cant find card for selected exhibit: " + selectedExhibit.Name);
                     }

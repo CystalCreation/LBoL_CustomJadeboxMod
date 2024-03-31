@@ -102,6 +102,15 @@ namespace CustomJadebox
                     }
 
                     gameRun.RewardAndShopCardColorLimitFlag++;
+
+                    //If Cromatic Dominator is active, reroll the deck to get a deck with only neutral cards
+                    GameMaster.Instance.StartCoroutine(ResetDeck(gameRun));
+                }
+
+                private static IEnumerator ResetDeck(GameRunController gameRun)
+                {
+                    //Need to delay reroll by one frame for the jadebox check to work
+                    yield return null;
                     ResetStart50.ResetStart50Deck(gameRun);
                 }
 
