@@ -30,6 +30,7 @@ using UnityEngine;
 
 
 using static CustomJadebox.BepinexPlugin;
+using static System.Collections.Specialized.BitVector32;
 
 
 namespace CustomJadebox.JadeBoxes
@@ -116,19 +117,22 @@ namespace CustomJadebox.JadeBoxes
                         }
                     }
 
-                    //add dublicate treasure if there are less than 3 treasures left to get
+                    //add random regular ehibit if there are less than 3 treasures left to get
                     else if (rewardList.Count < 3)
                     {
                         for (int i = 0; rewardList.Count < 3 || i > 3; i++)
                         {
-                            if (rewardList.Count == 0)
-                            {
-                                //Add placeholder if no more valid treasures are availabe
-                                rewardList.Add(Library.CreateExhibit<YanZianbei>());
-                            }
-                            var randomRxibit = rewardList[rng.NextInt(0, rewardList.Count - 1)];
-                            Debug.Log("randomly adding exibit: " + randomRxibit.Name);
-                            rewardList.Add(randomRxibit);
+                            //if (rewardList.Count == 0)
+                            //{
+                            //    //Add placeholder if no more valid treasures are availabe
+                            //    rewardList.Add(Library.CreateExhibit<YanZianbei>());
+                            //}
+                            //var randomExibit = rewardList[rng.NextInt(0, rewardList.Count - 1)];
+                            //Debug.Log("randomly adding exibit: " + randomExibit.Name);
+                            //rewardList.Add(randomExibit);
+
+
+                            rewardList.Add(run.CurrentStage.GetEliteEnemyExhibit());
                         }
 
                     }
