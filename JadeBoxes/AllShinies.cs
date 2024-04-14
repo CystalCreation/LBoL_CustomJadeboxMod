@@ -52,6 +52,7 @@ namespace CustomJadebox.JadeBoxes
             public sealed class GetAllShinies : JadeBox
             {
                 private static List<string> bossesDone = new List<string>();
+
                 protected override void OnGain(GameRunController run)
                 {
                     GameMaster.Instance.StartCoroutine(RemoveFromPool(run));
@@ -59,7 +60,7 @@ namespace CustomJadebox.JadeBoxes
                 }
                 protected override void OnAdded()
                 {
-                    GameMaster.Instance.StartCoroutine(RemoveFromPool(base.GameRun));
+                    //GameMaster.Instance.StartCoroutine(RemoveFromPool(base.GameRun));
                     bossesDone = new List<string>();
                 }
 
@@ -143,10 +144,11 @@ namespace CustomJadebox.JadeBoxes
 
                     static IEnumerator GainOtherShinies()
                     {
-                        if ((GameMaster.Instance != null) && AllShiniesJadebox(GameMaster.Instance.CurrentGameRun))
+                        if ((GameMaster.Instance != null) && (GameMaster.Instance.CurrentGameRun != null) && AllShiniesJadebox(GameMaster.Instance.CurrentGameRun))
                         {
+                            Debug.Log("start gaining shinies");
                             var run = GameMaster.Instance.CurrentGameRun;
-                            if(run.CurrentStation.Type == StationType.Boss)
+                            if(run.CurrentStation != null && run.CurrentStation.Type == StationType.Boss)
                             {
                                 string bossName = ((BossStation)run.CurrentStation).BossId;
 

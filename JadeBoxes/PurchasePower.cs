@@ -74,9 +74,11 @@ namespace CustomJadebox.JadeBoxes
                 {
                     //give player the Membership Card and the Portal Gun
                     var exhibit = new HashSet<Type> { typeof(PortalGun), typeof(Huiyuanka) };
-                    foreach (var et in exhibit)
+                    foreach (var ex in exhibit)
                     {
-                        yield return gameRun.GainExhibitRunner(Library.CreateExhibit(et));
+                        Debug.Log("gaining: " + ex.Name + " was in pool: " + (gameRun.ExhibitPool.Contains(ex)));
+
+                        yield return gameRun.GainExhibitRunner(Library.CreateExhibit(ex));
                     }
 
                     gameRun.ExhibitPool.RemoveAll(e => exhibit.Contains(e));
