@@ -52,12 +52,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Traveling Lightly" },
-                { "Description", "Whenever you gain an Exhibit that can be sold, loose that Exhibit and gain " +
-                "<sprite=\"Point\"\\ name=\"Gold\"> equal to its sell value. " +
-                "Exhibits in the shop have a {Value1}% chance to be shining exhibits."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()
@@ -155,7 +150,6 @@ namespace CustomJadebox.JadeBoxes
 
                 //Overwrite TriggerGain to remove the exhibit after aquisition
                 [HarmonyPatch(typeof(Exhibit), "TriggerGain")]
-                [HarmonyDebug]
                 class Exhibit_Patch
                 {
                     static void Postfix(ref IEnumerator __result)

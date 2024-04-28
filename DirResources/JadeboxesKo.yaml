@@ -1,0 +1,64 @@
+﻿#prettier-ignore
+GetAllExtraTurns:
+  Name: 웜홀
+  Description: 게임 시작시, |달의 부채|를 획득합니다. 플레이어와 적들은 두턴씩 행동합니다.
+
+GetAllShinies:
+  Name: 반짝반짝!
+  Description: 마나풀에 마나를 추가하지 않는 환상급 전시품이 게임에서 나오지 않습니다. 보스와 전투 종료시 마다, 선택지의 모든 환상급 전시품을 마나를 추가하지 않고 얻는 대신 {Mana}가 마나풀에 추가됩니다.
+
+AllUpgradedJadebox:
+  Name: 사랑했나봐
+  Description: 덱에 추가되는 모든 카드가 강화됩니다. 카드를 강화하는 비-환상급 전시품이 게임에서 나오지 않습니다. 매 전투 시작시, 모든 적들은 화력 {Value1} 과 속세의 미련 {Value2} 을 얻습니다.
+  
+GetCardLimit:
+  Name: 5초안에 끝낸다
+  Description: 턴 시작시, 가지고 있는 환상급 전시품 마다 {Mana}를 얻습니다. 매 턴마다 카드를 {Value1}장만 사용할 수 있습니다.
+
+GetChromaShift:
+  Name: 백색편이
+  Description: 게임 시작시, 마나풀을 늘리지 않고 대신 내 마나색 이외의 무작위 캐릭터의 환상급 전시품을 얻습니다. 마나풀의 적은 쪽 색의 마나와 모든 기본 방어 카드가 새 전시품의 색으로 바뀝니다.
+
+GetDefenseBuff:
+  Name: 거북거북 마법
+  Description: 카드 보상의 선택지가 하나 추가됩니다. 전투 시작시, 영력을 {Value1} 얻고 화력을 {Value1} 잃습니다.
+
+GetGapActivities:
+  Name: 모닥불 피워놓고
+  Description: "게임 시작시, 스키마의 옵션을 추가하는 전시품을 {Value1}개 얻습니다. 상점의 카드 강화 비용과 스키마의 기본카드 이외의 카드 비용이 <sprite=\"Point\"\\ name=\"Gold\">{Value2} 이 됩니다."
+
+OnlyRareJadebox:
+  Name: 강자의 고통
+  Description: 희귀 카드만 등장합니다.
+
+GetPurchasePower:
+  Name: 캐피탈리즘, 호!
+  Description: 게임 시작시, |회원증|과 |포탈건|을 얻습니다. 카드 보상의 선택지가 2개 줄어듭니다.
+
+RareMisfortuneJadebox:
+  Name: 파워 미끼
+  Description: 보스 전투 이외의 카드 보상에서 {Value2}% 확률로 희귀 카드가 나옵니다. 보스 전투 이외의 보상에서 희귀 카드를 얻으면, 무작위 일반 액운을 덱에 추가합니다.
+
+SellItAllJadebox:
+  Name: 가벼운 여행
+  Description: "팔 수 있는 전시품을 얻을 때 마다, 그 전시품을 잃고 <sprite=\"Point\"\\ name=\"Gold\">을 판매 비용만큼 얻습니다. 상점의 전시품이 {Value1}% 확률로 환상급 전시품이 나옵니다."
+
+SmallDeckJadebox:
+  Name: 성장 억제
+  Description: 덱에 카드가 {Value1}장 이상 있을 때 카드가 추가되면, 덱이 {Value1}장이 될때까지 제거할 수 있는 카드를 제거합니다. 카드는 덱에 추가된 순서대로 제거됩니다.
+
+GetGetTreasureHuner:
+  Name: 보물 사냥꾼
+  Description: 보스 전투 보상의 환상급 전시품이 카구야의 보물로 대체됩니다.
+
+GetWorldOfHurt:
+  Name: 고통의 세계
+  Description: 게임 시작시, |재봉틀|을 얻습니다. 전투 시작시, 영력을 {Value1} 얻습니다. 이 영력은 매 보스 전투시 마다 감소합니다. 플레이어의 턴 시작시, 취약을 얻고 모든 적에게 취약을 줍니다.
+
+ForgetYourName:
+  Name: 이름 지우기
+  Description: 게임 시작시, 마나풀의 각 마나를 {Mana}로 바꿉니다. 모든 색의 카드가 카드풀에 추가됩니다. 카드 보상의 선택지가 하나 추가됩니다. 중립 카드만 등장합니다.
+
+GetIntoTheVoid:
+  Name: 공허로
+  Description: 기본 등급 이외의 카드의 비용이 무작위 마나 1 만큼 감소하고 |소멸|을 얻습니다.

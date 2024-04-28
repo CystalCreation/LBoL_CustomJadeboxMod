@@ -48,11 +48,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Growth Inhibition" },
-                { "Description", "Whenever you add a card to your Library when you have {Value1}" +
-                " or more cards in your Library, remove cards than can be removed from your Library until {Value1} remain. Cards are removed in the order they where added to the Library."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()

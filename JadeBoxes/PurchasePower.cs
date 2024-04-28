@@ -48,11 +48,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Capitalism, Ho!" },
-                { "Description", "At the start of the run, gain the |Membership Card| and the |Portal Gun|." + 
-                " Card rewards \nhave two less options."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
 

@@ -54,11 +54,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Knockout in Five Steps" },
-                { "Description", "At the start of your turn, gain {Mana} for each shining exhibit you have." +
-                " Only {Value1} cards can be played each turn."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
 

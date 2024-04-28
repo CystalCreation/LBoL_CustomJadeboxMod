@@ -46,13 +46,10 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Turtle Up" },
-                { "Description", "Card rewards have one more option. At the start of combat, gain {Value1} Spirit and loose {Value1} Firepower."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
-            
+
 
 
 

@@ -37,14 +37,9 @@ namespace CustomJadebox.JadeBoxes
             }
 
 
-
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Oh, Shiny!" },
-                { "Description", "Shining exhibits that don't add mana to the mana base are removed from the pool. " +
-                "After each boss fight, gain all offered shining exhibits without gaining any base mana, instead add {Mana} to the mana base."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
 
@@ -130,7 +125,6 @@ namespace CustomJadebox.JadeBoxes
 
                 //Overwrite TriggerGain to gain all shining exhibits from bosses
                 [HarmonyPatch(typeof(Exhibit), "TriggerGain")]
-                [HarmonyDebug]
                 class Exhibit_Patch
                 {
                     static void Postfix(ref IEnumerator __result)

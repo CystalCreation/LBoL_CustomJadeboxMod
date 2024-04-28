@@ -49,10 +49,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Burden of the Mighty" },
-                { "Description", "Only Rare Cards can appear as card rewards and during combat."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()

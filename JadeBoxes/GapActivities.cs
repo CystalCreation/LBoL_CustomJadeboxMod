@@ -54,17 +54,12 @@ namespace CustomJadebox.JadeBoxes
             }
 
 
-
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Crafting at Campfires" },
-                { "Description",  "At the start of the run, gain {Value1}"+
-                " random exhibits that unlock options at a gap. Upgrading cards at a shop or non-basic cards at a gap costs {Value2}<sprite=\"Point\"\\ name=\"Gold\">."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
-            
+
 
 
 

@@ -40,11 +40,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Space Time Hole" },
-                { "Description", "At the start of the run, gain the |Lunar Fan|. The Player and the enemies take two turns in a row."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()

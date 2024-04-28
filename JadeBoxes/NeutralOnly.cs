@@ -50,11 +50,7 @@ namespace CustomJadebox
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Forget Your Name" },
-                { "Description", "At the start of the run, replace each mana in the mana base with {Mana}. " +
-                "Cards of all colors are added to the card pool. Card rewards have one more option. Only Neutral cards can appear."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()

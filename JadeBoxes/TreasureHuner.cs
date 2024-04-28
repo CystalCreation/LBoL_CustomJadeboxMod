@@ -53,13 +53,9 @@ namespace CustomJadebox.JadeBoxes
             }
 
 
-
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Treasure Hunter" },
-                { "Description", "Shining exhibit rewards after each boss are replaced with kaguya's treasures."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
 

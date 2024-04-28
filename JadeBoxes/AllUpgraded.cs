@@ -42,12 +42,7 @@ namespace CustomJadebox.JadeBoxes
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Adored by All" },
-                { "Description", "All cards that get added to your library are upgraded. " +
-                "Non-shining exhibits that upgrade cards are removed from the pool. At the start of each combat, all enemies gain {Value1}"
-                +" Firepower and {Value2} Lingering Regrets."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()

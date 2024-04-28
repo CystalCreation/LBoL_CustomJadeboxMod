@@ -45,14 +45,12 @@ namespace CustomJadebox.JadeBoxes
             }
 
 
+
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Power Bait" },
-                { "Description", "Card rewards from non-boss combats have a {Value2}" +
-                "% chance to be a Rare card. When you gain a Rare card from a non-boss reward screen, add a random common Misfortune to the library."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
+
 
             public override JadeBoxConfig MakeConfig()
             {

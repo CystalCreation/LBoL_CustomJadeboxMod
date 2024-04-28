@@ -53,11 +53,7 @@ namespace CustomJadebox
 
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "World of Hurt" },
-                { "Description", "At the start of the run, gain the |Sewing Machine|. " + "At the start of combat, gain {Value1}" +
-                " Spirit. This Spirit gain decreases after every boss fight. At the start of the Player's turn, gain Vulnerable and apply Vulnerable to each enemy."}
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
 

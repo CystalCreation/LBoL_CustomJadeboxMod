@@ -1,0 +1,66 @@
+﻿#prettier-ignore
+GetAllExtraTurns:
+  Name: Space Time Hole
+  Description: At the start of the run, gain the |Lunar Fan|. The Player and the enemies take two turns in a row.
+
+GetAllShinies:
+  Name: Oh, Shiny!
+  Description: Shining exhibits that don't add mana to the mana base are removed from the pool. After each boss fight, gain all offered shining exhibits without gaining any base mana, instead add {Mana} to the mana base.
+
+AllUpgradedJadebox:
+  Name: Adored by All
+  Description: "All cards that get added to your library are upgraded. Non-shining exhibits that \nupgrade cards are removed from the pool. At the start of each combat, all enemies \ngain {Value1} Firepower and {Value2} Lingering Regrets."
+  
+GetCardLimit:
+  Name: Knockout in Five Steps
+  Description: At the start of your turn, gain {Mana} for each shining exhibit you have. Only {Value1} cards can be played each turn.
+
+GetChromaShift:
+  Name: Chroma Shift
+  Description: At the start of the run, gain a random character shining exhibit of a different color than the mana color in your mana base without increasing your base mana. All mana in your mana base of your less abundant mana color and all basic block cards become the color of the new exhibit.
+
+GetDefenseBuff:
+  Name: Turtle Up
+  Description: Card rewards have one more option. At the start of combat, gain {Value1} Spirit and loose {Value1} Firepower.
+
+GetGapActivities:
+  Name: Crafting at Campfires
+  Description: "At the start of the run, gain {Value1} random exhibits that unlock options at a gap. Upgrading cards at a shop or non-basic cards at a gap costs {Value2}<sprite=\"Point\"\
+    \ name=\"Gold\">."
+
+OnlyRareJadebox:
+  Name: Burden of the Mighty
+  Description: Only Rare Cards can appear as card rewards and during combat.
+
+GetPurchasePower:
+  Name: Capitalism, Ho!
+  Description: "At the start of the run, gain the |Membership Card| and the |Portal Gun|. Card rewards \nhave two less options."
+
+RareMisfortuneJadebox:
+  Name: Power Bait
+  Description: Card rewards from non-boss combats have a {Value2}% chance to be a Rare card. When you gain a Rare card from a non-boss reward screen, add a random common Misfortune to the library.
+
+SellItAllJadebox:
+  Name: Traveling Lightly
+  Description: "Whenever you gain an Exhibit that can be sold, loose that Exhibit and gain <sprite=\"Point\"\
+    \ name=\"Gold\"> equal to its sell value. Exhibits in the shop have a {Value1}% chance to be shining exhibits."
+
+SmallDeckJadebox:
+  Name: Growth Inhibition
+  Description: Whenever you add a card to your Library when you have {Value1} or more cards in your Library, remove cards than can be removed from your Library until {Value1} remain. Cards are removed in the order they where added to the Library.
+
+GetGetTreasureHuner:
+  Name: Treasure Hunter
+  Description: Shining exhibit rewards after each boss are replaced with kaguya's treasures.
+
+GetWorldOfHurt:
+  Name: World of Hurt
+  Description: "At the start of the run, gain the |Sewing Machine|. At the start of combat, gain {Value1} Spirit. \nThis Spirit gain decreases after every boss fight. At the start of the Player's turn, gain Vulnerable and apply Vulnerable to each enemy."
+
+ForgetYourName:
+  Name: Forget Your Name
+  Description: "At the start of the run, replace each mana in the mana base with {Mana}. Cards of all colors are added to the card pool. Card rewards have one more option. Only Neutral cards \ncan appear."
+
+GetIntoTheVoid:
+  Name: Into The Void
+  Description: All non-basic cards cost one random mana less and gain exile.

@@ -48,15 +48,9 @@ namespace CustomJadebox.JadeBoxes
                 return nameof(GetChromaShift);
             }
 
-
             public override LocalizationOption LoadLocalization()
             {
-                return new DirectLocalization(new Dictionary<string, object>() {
-                { "Name", "Chroma Shift" },
-                { "Description", "At the start of the run, gain a random character shining exhibit of a different color than the mana color in your mana base without increasing your base mana. " +
-                "All mana in your mana base of your less abundant mana color and all basic block cards become the color of the new exhibit." 
-                }
-            });
+                return BepinexPlugin.JadeboxBatchLoc.AddEntity(this);
             }
 
             public override JadeBoxConfig MakeConfig()
