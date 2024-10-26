@@ -1,0 +1,64 @@
+﻿#prettier-ignore
+GetAllExtraTurns:
+  Name: 時空の穴
+  Description: ゲーム開始時、|月扇|を得る。プレイヤーと敵はそれぞれ2ターン連続で行動する。
+
+GetAllShinies:
+  Name: キラキラ！
+  Description: マナ基盤にマナを加えない光耀展示品は出現しない。ボス戦後、選択肢として提示された光耀展示品を全て獲得するが、マナ基盤には{Mana}だけが追加される。
+
+AllUpgradedJadebox:
+  Name: 愛され体質
+  Description: "デッキに加えられる全てのカードはアップグレードされる。カードをアップグレードする非光耀展示品は出現しない。\n戦闘開始時、全ての敵は火力{Value1}と浮き世への未練{Value2}を得る。"
+  
+GetCardLimit:
+  Name: 五歩必殺
+  Description: ターン開始時、持っている光耀展示品1つにつき{Mana}を得る。ターンごとに{Value1}枚のカードしか使用できない。
+
+GetChromaShift:
+  Name: 色相遷移
+  Description: ゲーム開始時、あなたのマナ基盤にない色のランダムなキャラ専用光耀展示品を1つ得る(マナ基盤にマナは追加されない)。あなたのマナ基盤に含まれる少ない方の色のマナと、その色の基本防御カードは全て新しい展示品の色になる。
+
+GetDefenseBuff:
+  Name: 守りの姿勢
+  Description: カード報酬の選択肢が1つ増加する。戦闘開始時、霊力{Value1}を得て、火力{Value1}を失う。
+
+GetGapActivities:
+  Name: 焚き火クラフト
+  Description: "ゲーム開始時、スキマでの選択肢を増やす展示品をランダムに{Value1}つ得る。ショップでのアップグレードやスキマでの基本でないカードのアップグレードは<sprite=\"Point\"\\ name=\"Gold\">{Value2}を消費する。"
+
+OnlyRareJadebox:
+  Name: 強者の重担
+  Description: カード報酬及び戦闘中に抽選されるカードの候補にはレアカードのみが出現する。
+
+GetPurchasePower:
+  Name: 資本主義よ！
+  Description: "ゲーム開始時、|会員証|と|ポータルガン|を得る。カード報酬の選択肢が2つ減少する。"
+
+RareMisfortuneJadebox:
+  Name: 力の誘惑
+  Description: ボスでない戦闘のカード報酬は{Value2}%の確率でレアカードが出現する。ボスでない戦闘のカード報酬でレアカードを入手する時、ランダムなコモンの厄災をデッキに加える。
+
+SellItAllJadebox:
+  Name: 身軽な旅
+  Description: "売れる展示品を入手するたび、それを失いそれの売価に等しい<sprite=\"Point\"\\ name=\"Gold\">を得る。ショップでは{Value1}%の確率で光耀展示品が販売される。"
+
+SmallDeckJadebox:
+  Name: 成長阻害
+  Description: デッキにカードが{Value1}枚以上ある状態でデッキにカードを加える時、デッキのカードが{Value1}以下になるように削除可能なカードを削除する。カードはデッキに先に加えられた順に削除されていく。
+
+GetGetTreasureHuner:
+  Name: トレジャーハンター
+  Description: 各ボス戦後の光耀展示品報酬は輝夜の秘宝に置き換えられる。
+
+GetWorldOfHurt:
+  Name: 痛みの世界
+  Description: "ゲーム開始時、|ミシン|を得る。戦闘開始時、霊力{Value1}を得る。得られる霊力はボス戦を終わらせるたびに減少する。\nプレイヤーのターン開始時、プレイヤーと全ての敵は弱体を得る。"
+
+ForgetYourName:
+  Name: 君の名を忘れて
+  Description: "ゲーム開始時、マナ基盤にある全てのマナを{Mana}に置き換える。全ての色のカードがカードプールに追加される。カード報酬の選択肢が1つ増加する。カード報酬には共通カードだけが出現する。"
+
+GetIntoTheVoid:
+  Name: 虚空へ消え
+  Description: 基本でないカードは全てコストがランダムに1つ減り、|廃棄|を持つ。
