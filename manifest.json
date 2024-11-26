@@ -1,0 +1,7 @@
+{
+  "name": "CustomJadeboxMod",
+  "version_number": "1.6.3",
+  "website_url": "https://github.com/CystalCreation/LBoL_CustomJadeboxMod",
+  "description": "A mod that adds several new Jadebox modifiers to the game, which greatly change the run for more replayability.",
+  "dependencies": [ "BepInEx-BepInExPack-5.4.2100", "TeamNeo-Sideloader-0.5.0"]
+}

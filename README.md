@@ -12,7 +12,7 @@ At the start of the run, gain the Lunar Fan. The Player and the enemies take two
 
 <b>Adored by All</b>
 
-All cards that get added to your library are upgraded. Non-shining exhibits that upgrade cards are removed from the pool. At the start of each combat, all enemies gain 2 Firepower and 1 Lingering Regrets.
+All cards that get added to your library are upgraded. Non-shining exhibits that upgrade cards are removed from the pool. At the start of each combat, all enemies gain 3 Firepower and 1 Lingering Regrets.
 
 
 
@@ -30,7 +30,7 @@ At the start of the run, gain the Sewing Machine. At the start of combat, gain 4
 
 <b>Treasure Hunter</b>
 
-Shining exhibit rewards after each boss are replaced with Kaguya's treasures.
+Shining exhibit rewards after each boss are replaced with Kaguya's treasures. They do not add mana to the mana base.
 
 
 
@@ -66,19 +66,19 @@ At the start of your turn, gain 1 Philosophers mana for each shining exhibit you
 
 <b>Traveling Lightly</b>
 
-Whenever you gain an Exhibit that can be sold, loose that Exhibit and gain money equal to its sell value. Exhibits in the shop have a 15% chance to be shining exhibits.
+Whenever you gain an Exhibit that can be sold, lose that Exhibit and gain money equal to its sell value. Exhibits in the shop have a 15% chance to be shining exhibits.
 
 
 
 <b>Burden of the Mighty</b>
 
-Only Rare Cards can appear as card rewards and during combat.
+Only Rare Cards can appear in card rewards, shops, events and during combat.
 
 
 
 <b>Turtle Up</b>
 
-Card rewards have one more option. At the start of combat, gain 4 Spirit and loose 4 Firepower.
+Card rewards have one more option. At the start of combat, gain 4 Spirit and lose 4 Firepower.
 
 
 

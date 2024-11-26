@@ -1,5 +1,18 @@
 Changelog: 
 
+1.6.3
+
+    • Koishis exhibits can now appear as random shining exhibits with Chroma Shift and Traveling Lightly.
+
+    • Chroma Shift can no longer give shining exhibits that would result in the same mana colors as the default mana colors of the owner of the gained exhibit.
+
+    • Text adjustments and typo fixes to jadebox descriptions.
+
+    • Treasure Hunter: Now removes mana added to the mana base from treasures.
+
+    • Adored by All: Firepower gain for enemies increased from 2 to 3.
+
+
 1.6.2
 
     • Added Japanese translation, courtesy of 十二夜夢 (nazotuki)
