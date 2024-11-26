@@ -49,7 +49,7 @@ SmallDeckJadebox:
 
 GetGetTreasureHuner:
   Name: トレジャーハンター
-  Description: 各ボス戦後の光耀展示品報酬は輝夜の秘宝に置き換えられる。
+  Description: 各ボス戦後の光耀展示品報酬は輝夜の秘宝に置き換えられる。宝物はマナベースにマナを追加しない。
 
 GetWorldOfHurt:
   Name: 痛みの世界

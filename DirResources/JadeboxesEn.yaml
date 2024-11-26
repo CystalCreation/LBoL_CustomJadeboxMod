@@ -21,7 +21,7 @@ GetChromaShift:
 
 GetDefenseBuff:
   Name: Turtle Up
-  Description: Card rewards have one more option. At the start of combat, gain {Value1} Spirit and loose {Value1} Firepower.
+  Description: Card rewards have one more option. At the start of combat, gain {Value1} Spirit and lose {Value1} Firepower.
 
 GetGapActivities:
   Name: Crafting at Campfires
@@ -30,7 +30,7 @@ GetGapActivities:
 
 OnlyRareJadebox:
   Name: Burden of the Mighty
-  Description: Only Rare Cards can appear as card rewards and during combat.
+  Description: Only Rare Cards can appear in card rewards, shops, events and during combat.
 
 GetPurchasePower:
   Name: Capitalism, Ho!
@@ -42,7 +42,7 @@ RareMisfortuneJadebox:
 
 SellItAllJadebox:
   Name: Traveling Lightly
-  Description: "Whenever you gain an Exhibit that can be sold, loose that Exhibit and gain <sprite=\"Point\"\
+  Description: "Whenever you gain an Exhibit that can be sold, lose that Exhibit and gain <sprite=\"Point\"\
     \ name=\"Gold\"> equal to its sell value. Exhibits in the shop have a {Value1}% chance to be shining exhibits."
 
 SmallDeckJadebox:
@@ -51,7 +51,7 @@ SmallDeckJadebox:
 
 GetGetTreasureHuner:
   Name: Treasure Hunter
-  Description: Shining exhibit rewards after each boss are replaced with kaguya's treasures.
+  Description: Shining exhibit rewards after each boss are replaced with Kaguya's treasures. They do not add mana to the mana base.
 
 GetWorldOfHurt:
   Name: World of Hurt

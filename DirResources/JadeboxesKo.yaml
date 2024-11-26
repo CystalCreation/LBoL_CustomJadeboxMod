@@ -29,7 +29,7 @@ GetGapActivities:
 
 OnlyRareJadebox:
   Name: 강자의 고통
-  Description: 희귀 카드만 등장합니다.
+  Description: 카드 보상, 상점, 이벤트, 전투중 희귀 카드만 등장합니다.
 
 GetPurchasePower:
   Name: 캐피탈리즘, 호!
@@ -49,7 +49,7 @@ SmallDeckJadebox:
 
 GetGetTreasureHuner:
   Name: 보물 사냥꾼
-  Description: 보스 전투 보상의 환상급 전시품이 카구야의 보물로 대체됩니다.
+  Description: 보스 전투 보상의 환상급 전시품이 카구야의 보물로 대체됩니다. 이 카구야의 보물들은 마나를 주지 않습니다.
 
 GetWorldOfHurt:
   Name: 고통의 세계
