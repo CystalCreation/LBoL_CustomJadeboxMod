@@ -12,6 +12,7 @@ using LBoL.Core.StatusEffects;
 using LBoL.Core.Units;
 using LBoL.EntityLib.Adventures;
 using LBoL.EntityLib.Cards.Character.Cirno;
+using LBoL.EntityLib.Cards.Character.Koishi;
 using LBoL.EntityLib.Cards.Character.Marisa;
 using LBoL.EntityLib.Cards.Character.Reimu;
 using LBoL.EntityLib.Cards.Character.Sakuya;
@@ -78,19 +79,41 @@ namespace CustomJadebox.JadeBoxes
                 {
                     //list of all currently available starting exhibits
                     var exhibits = new List<Type> { typeof(CirnoG), typeof(CirnoU), typeof(MarisaB),
-                        typeof(MarisaR), typeof(ReimuR), typeof(ReimuW), typeof(SakuyaU),typeof(SakuyaW) };
+                        typeof(MarisaR), typeof(ReimuR), typeof(ReimuW), typeof(SakuyaU),typeof(SakuyaW),typeof(KoishiB),typeof(KoishiG) };
 
                     var rng = gameRun.AdventureRng;
 
-                    //remove exhibits with the colors the player has
+                    
                     var toRemove = new List<Type>();
                     for (int i = 0; i < exhibits.Count; i++)
                     {
+                        //remove exhibits with the colors the player has
                         var ex = exhibits[i];
-                        if (gameRun.BaseMana.HasColor(Library.CreateExhibit(ex).Config.BaseManaColor.Value))
+                        var config = Library.CreateExhibit(ex).Config;
+                        if (gameRun.BaseMana.HasColor(config.BaseManaColor.Value))
                         {
                             toRemove.Add(ex);
+                            continue;
                         }
+
+
+                        //remove exhibit if the resulting mana base would be identical to that of the gained exhibits owner
+                        foreach (var secondaryExhibit in gameRun.ShiningExhibitPool)
+                        {
+                            var secodaryConfig = Library.CreateExhibit(secondaryExhibit).Config;
+
+                            if (secondaryExhibit.Name != ex.Name && config.Owner == secodaryConfig.Owner)
+                            {
+                                Debug.Log("secondary exhibit of " + ex.Name + " is " + secondaryExhibit.Name);
+                                if (secodaryConfig.BaseManaColor.Value == GetPrimaryExhibit(gameRun).Config.BaseManaColor.Value)
+                                {
+                                    Debug.Log("removing " + ex.Name + " because of vanilla color combination");
+
+                                    toRemove.Add(ex);
+                                }
+                            }
+                        }
+
                     }
                     foreach (var ex in toRemove)
                     {
@@ -116,6 +139,16 @@ namespace CustomJadebox.JadeBoxes
 
                 }
 
+                private static Exhibit GetSecondaryExhibit(GameRunController gameRun)
+                {
+                    return Library.CreateExhibit((gameRun.PlayerType == PlayerType.TypeA) ? gameRun.Player.Config.ExhibitB : gameRun.Player.Config.ExhibitA);
+                }
+
+                private static Exhibit GetPrimaryExhibit(GameRunController gameRun)
+                {
+                    return Library.CreateExhibit((gameRun.PlayerType == PlayerType.TypeB) ? gameRun.Player.Config.ExhibitB : gameRun.Player.Config.ExhibitA);
+                }
+
                 private static IEnumerator SetMana(GameRunController gameRun)
                 {
                     yield return null;
@@ -124,7 +157,7 @@ namespace CustomJadebox.JadeBoxes
                     gameRun.LoseBaseMana(selectedExhibit.BaseMana, false);
 
                     //grab the starting exhibit the player didn't chose to determine the less abundant mana color
-                    secondaryExhibit = Library.CreateExhibit((gameRun.PlayerType == PlayerType.TypeA) ? gameRun.Player.Config.ExhibitB : gameRun.Player.Config.ExhibitA);
+                    secondaryExhibit = GetSecondaryExhibit(gameRun);
                     Debug.Log("players other exhibit: " + secondaryExhibit.Name);
 
                     //check how much mana to remove and only add mana equal to the removed mana
@@ -154,7 +187,7 @@ namespace CustomJadebox.JadeBoxes
                     foreach (var card in gameRun.BaseDeck)
                     {
                         //check how many basic cards need to be removed
-                        if (card.Config.Colors.Contains(colorToRemove) && card.IsBasic)
+                        if (card.Config.Colors.Contains(colorToRemove))
                         {
                             toRemove.Add(card);
                         }
@@ -212,6 +245,14 @@ namespace CustomJadebox.JadeBoxes
                     else if (selectedExhibit is SakuyaW)
                     {
                         gameRun.AddDeckCards(Library.CreateCards<SakuyaBlockW>(1, false));
+                    }
+                    else if (selectedExhibit is KoishiG)
+                    {
+                        gameRun.AddDeckCards(Library.CreateCards<KoishiBlockG>(1, false));
+                    }
+                    else if (selectedExhibit is KoishiB)
+                    {
+                        gameRun.AddDeckCards(Library.CreateCards<KoishiBlockB>(1, false));
                     }
                     else
                     {

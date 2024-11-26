@@ -31,7 +31,7 @@ namespace CustomJadebox.JadeBoxes
     {
         public sealed class AllUpgradedDef : JadeBoxTemplate
         {
-            private static int firepowerGain = 2;
+            private static int firepowerGain = 3;
             private static int regretsGain = 1;
 
             public override IdContainer GetId()

@@ -19,6 +19,7 @@ using LBoL.Presentation.UI.Panels;
 using LBoLEntitySideloader;
 using LBoLEntitySideloader.Attributes;
 using LBoLEntitySideloader.Entities;
+using LBoLEntitySideloader.ExtraFunc;
 using LBoLEntitySideloader.Resource;
 using LBoLEntitySideloader.TemplateGen;
 using System;
@@ -30,6 +31,7 @@ using UnityEngine;
 
 
 using static CustomJadebox.BepinexPlugin;
+using static CustomJadebox.JadeBoxes.AllShinies.AllShiniesDef;
 using static System.Collections.Specialized.BitVector32;
 
 
@@ -113,22 +115,30 @@ namespace CustomJadebox.JadeBoxes
                         }
                     }
 
-                    //add random regular ehibit if there are less than 3 treasures left to get
+                    //add random exhibits if there are less than 3 treasures left to get
                     else if (rewardList.Count < 3)
                     {
                         for (int i = 0; rewardList.Count < 3 || i > 3; i++)
                         {
-                            //if (rewardList.Count == 0)
-                            //{
-                            //    //Add placeholder if no more valid treasures are availabe
-                            //    rewardList.Add(Library.CreateExhibit<YanZianbei>());
-                            //}
-                            //var randomExibit = rewardList[rng.NextInt(0, rewardList.Count - 1)];
-                            //Debug.Log("randomly adding exibit: " + randomExibit.Name);
-                            //rewardList.Add(randomExibit);
+                            if (AllShiniesJadebox(run))
+                            {
+                                //If Oh, Shiny is enabled, allow random regular exhibits to be generated
+                                rewardList.Add(run.CurrentStage.GetEliteEnemyExhibit());                                
+                            }
+                            else
+                            {
+                                if (rewardList.Count == 0)
+                                {
+                                    //Add regular exhibits if no more valid treasures are availabe
+                                    rewardList.Add(run.CurrentStage.GetEliteEnemyExhibit());
+                                }
+                                //Otherwhise add dublicate treasures
+                                var randomExibit = rewardList[rng.NextInt(0, rewardList.Count - 1)];
+                                Debug.Log("randomly adding exibit: " + randomExibit.Name);
+                                rewardList.Add(randomExibit);
+                            }
 
 
-                            rewardList.Add(run.CurrentStage.GetEliteEnemyExhibit());
                         }
 
                     }
@@ -162,6 +172,106 @@ namespace CustomJadebox.JadeBoxes
                         }
 
 
+                    }
+                }
+
+                public static bool AllShiniesJadebox(GameRunController run)
+                {
+                    if (run == null)
+                    {
+                        return false;
+                    }
+
+                    IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
+
+                    if (jadeBox != null && jadeBox.Count > 0)
+                    {
+                        if (run.JadeBoxes.Any((JadeBox jb) => jb is GetAllShinies))
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                public static bool TresureHunterJadebox(GameRunController run)
+                {
+                    if (run == null)
+                    {
+                        return false;
+                    }
+
+                    IReadOnlyList<JadeBox> jadeBox = run.JadeBoxes;
+
+                    if (jadeBox != null && jadeBox.Count > 0)
+                    {
+                        if (run.JadeBoxes.Any((JadeBox jb) => jb is GetGetTreasureHuner))
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+
+
+
+                //Class that allows easier postfixes for IEnumerator corutines
+                class CoroutineExtender : IEnumerable
+                {
+                    public IEnumerator target_enumerator;
+                    public List<IEnumerator> preItems = new List<IEnumerator>();
+                    public List<IEnumerator> postItems = new List<IEnumerator>();
+                    public List<IEnumerator> midItems = new List<IEnumerator>();
+
+
+                    public CoroutineExtender() { }
+
+                    public CoroutineExtender(IEnumerator target_enumerator) { this.target_enumerator = target_enumerator; }
+
+                    public IEnumerator GetEnumerator()
+                    {
+                        foreach (var e in preItems) yield return e;
+                        int i = 0;
+                        while (target_enumerator.MoveNext())
+                        {
+                            yield return target_enumerator.Current;
+                            i++;
+                        }
+                        foreach (var e in postItems) yield return e;
+                    }
+                }
+
+
+                //Overwrite TriggerGain to remove mana gain from treasures
+                [HarmonyPatch(typeof(Exhibit), "TriggerGain")]
+                class Exhibit_Patch
+                {
+                    static void Postfix(ref IEnumerator __result)
+                    {
+                        var extendedRez = new CoroutineExtender(__result);
+
+                        extendedRez.postItems.Add(removeMana());
+
+                        __result = extendedRez.GetEnumerator();
+
+                    }
+
+                    static IEnumerator removeMana()
+                    {
+                        if ((GameMaster.Instance != null) && (GameMaster.Instance.CurrentGameRun != null) 
+                            && TresureHunterJadebox(GameMaster.Instance.CurrentGameRun)
+                            && !AllShiniesJadebox(GameMaster.Instance.CurrentGameRun))
+                        {
+                            var run = GameMaster.Instance.CurrentGameRun;
+                            if (run.CurrentStation != null && run.CurrentStation.Type == StationType.Boss)
+                            {
+                                Debug.Log("removing rainbow mana from treasure gain");
+                                run.LoseBaseMana(ManaGroup.Philosophies(1), false);
+                            }
+
+                        }
+                        yield break;
                     }
                 }
 

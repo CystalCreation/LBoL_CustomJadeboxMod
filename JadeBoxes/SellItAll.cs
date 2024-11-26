@@ -228,7 +228,7 @@ namespace CustomJadebox.JadeBoxes
                             {
                                 //Filter out exhibits of unreleased characters
                                 __result = run.RollShiningExhibit(run.ShinningExhibitRng, run.CurrentStation.Stage.GetSentinelExhibit,(ExhibitConfig config) => 
-                                config != null && (config.Owner == null || (config.Owner != null && !config.Owner.Contains("Koishi") && !config.Owner.Contains("Alice"))));
+                                config != null && (config.Owner == null || (config.Owner != null && !config.Owner.Contains("Alice"))));
                             }
                         }
                     }

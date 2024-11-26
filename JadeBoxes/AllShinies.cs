@@ -55,7 +55,6 @@ namespace CustomJadebox.JadeBoxes
                 }
                 protected override void OnAdded()
                 {
-                    //GameMaster.Instance.StartCoroutine(RemoveFromPool(base.GameRun));
                     bossesDone = new List<string>();
                 }
 
@@ -68,7 +67,8 @@ namespace CustomJadebox.JadeBoxes
 
                     //remove shining exhibits that gain mana mid battle instead of adding to base mana
                     var exhibit = new HashSet<Type> { typeof(YizangnuoWuzhi), typeof(QipaiYouhua),
-                        typeof(HuiyeBaoxiang), typeof(LouguanJian)};
+                        typeof(HuiyeBaoxiang), /*typeof(LouguanJian),*/typeof(QicaiLianhua)} ;
+
                     foreach (var item in exhibit)
                     {
                         Debug.Log("removing from pool: " + item.Name + " was in pool: " + (gameRun.ShiningExhibitPool.Contains(item)));
@@ -162,7 +162,7 @@ namespace CustomJadebox.JadeBoxes
                                         {
                                             run.GainBaseMana(ManaGroup.Colorlesses(1));
                                         }
-                                        yield return null;
+                                        //yield return null;
 
                                         //remove mana just gained from the new exhibit
                                         run.LoseBaseMana(exhibit.BaseMana, false);
